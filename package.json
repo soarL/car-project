@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "/",
   "dependencies": {
+    "antd-mobile": "^2.1.8",
     "autoprefixer": "7.1.6",
     "axios": "^0.17.1",
     "babel-core": "6.26.0",
@@ -111,7 +112,8 @@
   "devDependencies": {
     "babel-plugin-import": "^1.6.3",
     "less": "^2.7.3",
-    "less-loader": "^4.0.5"
+    "less-loader": "^4.0.5",
+    "rc-form": "^2.2.0"
   },
   "proxy": "http://www.linzantian.com"
 }
