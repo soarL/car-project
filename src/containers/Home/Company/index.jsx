@@ -45,7 +45,7 @@ class Company extends Component{
 				</List>
 				
             	<div  className='button-box'>
-            		<Button type="primary" onClick={()=>{this.props.history.push('/home/company')}}>下一步</Button>
+            		<Button type="primary" onClick={()=>{this.props.history.push('/home/upload')}}>下一步</Button>
             	</div>
 
 			</div>

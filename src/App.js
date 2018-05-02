@@ -31,6 +31,22 @@ const AsyncCompany = Loadable({
   loading: loading
 })
 
+const AsyncUpload = Loadable({
+  loader: () => import('@/containers/Home/Upload/index'),
+  loading: loading
+})
+
+const AsyncResult = Loadable({
+  loader: () => import('@/containers/Home/Result/index'),
+  loading: loading
+})
+
+const AsyncApplyDetails = Loadable({
+  loader: () => import('@/containers/User/ApplyDetails/index'),
+  loading: loading
+})
+
+
 class App extends Component {
   constructor(props){
     super(props)
@@ -45,6 +61,8 @@ class App extends Component {
     AsyncUserIndex.preload()
     AsyncDetails.preload()
     AsyncCompany.preload()
+    AsyncUpload.preload()
+    AsyncApplyDetails.preload()
   }
   render() {
     return (
@@ -54,9 +72,12 @@ class App extends Component {
             	<Switch>
             		<Route path="/" exact component={ AsyncIndex } />
                 <Route path="/home/insurance" exact component={ AsyncInsurance } />
-            		<Route path="/home/company" exact component={ AsyncCompany } />
+                <Route path="/home/company" exact component={ AsyncCompany } />
+                <Route path="/home/upload" exact component={ AsyncUpload } />
+            		<Route path="/home/result" exact component={ AsyncResult } />
             		<Route path="/user" component={ AsyncUserIndex } />
-            		<Route path="/details" component={ AsyncDetails } />
+                <Route path="/details" component={ AsyncDetails } />
+            		<Route path="/applydetails" component={ AsyncApplyDetails } />
             	</Switch>
             </div>
             <TabBar height={50}/>
