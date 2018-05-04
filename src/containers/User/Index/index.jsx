@@ -1,8 +1,8 @@
 import React,{ Component } from 'react'
 import Header from '@/components/Header'
-import { Link } from 'react-router-dom'
+import { Link ,withRouter} from 'react-router-dom'
 import './index.less'
-import { WhiteSpace,Icon,Flex } from 'antd-mobile'
+import { WhiteSpace,Icon,Flex ,Button} from 'antd-mobile'
 import CustomIcon from '@/components/CustomIcon'
 
 
@@ -28,6 +28,19 @@ class Item extends Component{
 	}
 }
 
+class UnLogin extends Component{
+	render(){
+		return(
+			<Flex align='center'>
+				<Button type='primary' size='small' onClick={()=>{this.props.history.push('/login')}}>登录</Button>&nbsp;&nbsp;&nbsp;
+				<Button type='primary' size='small' onClick={()=>{this.props.history.push('/register')}}>注册</Button>
+			</Flex>
+		)
+	}
+}
+
+UnLogin = withRouter(UnLogin)
+
 class Index extends Component{
 	render(){
 		return(
@@ -42,22 +55,22 @@ class Index extends Component{
 						</Flex>
 					</Flex.Item>
 					<Flex.Item className='user-name'>
-						<p>梦醒时分</p>
-						<p>手机：18959333600</p>
+						{
+							this.props.isLogin ? <div><p>梦醒时分</p><p>手机：18959333600</p></div> : <UnLogin/>
+						}
 					</Flex.Item>
 				</Flex>
 
 				<Item href='/details' type={require('./asset/shielding.svg')}> 申请记录</Item>
-				<Item href='/' type={require('./asset/document.svg')}> 还款记录</Item>
+				<Item href='/repayhistory' type={require('./asset/document.svg')}> 还款记录</Item>
 				<WhiteSpace />
 				<WhiteSpace />
-				<Item href='/' type={require('./asset/document_fill.svg')}> 近期还款客户</Item>
-				<Item href='/' type={require('./asset/financial_fill.svg')}> 逾期客户列表</Item>
-				<Item href='/' type={require('./asset/accessory.svg')}> 推广员列表</Item>
-				<Item href='/' type={require('./asset/qrcode.svg')}> 我的推广码</Item>
+				<Item href='/recentrepay' type={require('./asset/document_fill.svg')}> 近期还款客户</Item>
+				<Item href='/overdue' type={require('./asset/financial_fill.svg')}> 逾期客户列表</Item>
+				<Item href='/promoter' type={require('./asset/accessory.svg')}> 推广员列表</Item>
+				<Item href='/qrcode' type={require('./asset/qrcode.svg')}> 我的推广码</Item>
 				<WhiteSpace />
 				<WhiteSpace />
-				<Item href='/' type={require('./asset/setup.svg')}> 设置</Item>
 			</div>
 		)
 	}

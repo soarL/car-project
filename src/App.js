@@ -46,6 +46,65 @@ const AsyncApplyDetails = Loadable({
   loading: loading
 })
 
+const AsyncAmount = Loadable({
+  loader: () => import('@/containers/User/Amount/index'),
+  loading: loading
+})
+
+const AsyncPaymentHistory = Loadable({
+  loader: () => import('@/containers/User/PaymentHistory/index'),
+  loading: loading
+})
+
+const AsyncRepayHistory = Loadable({
+  loader: () => import('@/containers/User/RepayHistory/index'),
+  loading: loading
+})
+
+const AsyncRecentRepay = Loadable({
+  loader: () => import('@/containers/User/RecentRepay/index'),
+  loading: loading
+})
+
+const AsyncOverdue = Loadable({
+  loader: () => import('@/containers/User/Overdue/index'),
+  loading: loading
+})
+
+const AsyncCollectionDetail = Loadable({
+  loader: () => import('@/containers/User/CollectionDetail/index'),
+  loading: loading
+})
+
+const AsyncAddCollection = Loadable({
+  loader: () => import('@/containers/User/AddCollection/index'),
+  loading: loading
+})
+
+const AsyncPromoter = Loadable({
+  loader: () => import('@/containers/User/Promoter/index'),
+  loading: loading
+})
+
+const AsyncItemRecord = Loadable({
+  loader: () => import('@/containers/User/ItemRecord/index'),
+  loading: loading
+})
+
+const AsyncQRcode = Loadable({
+  loader: () => import('@/containers/User/QRcode/index'),
+  loading: loading
+})
+
+const AsyncLogin = Loadable({
+  loader: () => import('@/containers/Login'),
+  loading: loading
+})
+
+const AsyncRegister = Loadable({
+  loader: () => import('@/containers/Register'),
+  loading: loading
+})
 
 class App extends Component {
   constructor(props){
@@ -63,6 +122,18 @@ class App extends Component {
     AsyncCompany.preload()
     AsyncUpload.preload()
     AsyncApplyDetails.preload()
+    AsyncAmount.preload()
+    AsyncPaymentHistory.preload()
+    AsyncRepayHistory.preload()
+    AsyncRecentRepay.preload()
+    AsyncOverdue.preload()
+    AsyncCollectionDetail.preload()
+    AsyncAddCollection.preload()
+    AsyncPromoter.preload()
+    AsyncItemRecord.preload()
+    AsyncQRcode.preload()
+    AsyncLogin.preload()
+    AsyncRegister.preload()
   }
   render() {
     return (
@@ -77,7 +148,19 @@ class App extends Component {
             		<Route path="/home/result" exact component={ AsyncResult } />
             		<Route path="/user" component={ AsyncUserIndex } />
                 <Route path="/details" component={ AsyncDetails } />
-            		<Route path="/applydetails" component={ AsyncApplyDetails } />
+                <Route path="/applydetails" component={ AsyncApplyDetails } />
+                <Route path="/amount" component={ AsyncAmount } />
+                <Route path="/paymenthistory" component={ AsyncPaymentHistory } />
+                <Route path="/repayhistory" component={ AsyncRepayHistory } />
+                <Route path="/recentrepay" component={ AsyncRecentRepay } />
+                <Route path="/overdue" component={ AsyncOverdue } />
+                <Route path="/collectiondetail" component={ AsyncCollectionDetail } />
+                <Route path="/addcollection" component={ AsyncAddCollection } />
+                <Route path="/promoter" component={ AsyncPromoter } />
+                <Route path="/itemrecord" component={ AsyncItemRecord } />
+                <Route path="/qrcode" component={ AsyncQRcode } />
+                <Route path="/login" component={ AsyncLogin } />
+            		<Route path="/register" component={ AsyncRegister } />
             	</Switch>
             </div>
             <TabBar height={50}/>

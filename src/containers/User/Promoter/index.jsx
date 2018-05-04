@@ -8,12 +8,12 @@ import List from '@/components/List'
 
 
 const data = [
-	{faceUrl:"https://asset.91hc.com/src/images/index/new-center-1.png",name:'张零食',timer:'2018-10-20',status:'申请中',href:'/applydetails'},
-	{faceUrl:"https://asset.91hc.com/src/images/index/new-center-1.png",name:'张零食',timer:'2018-10-20',status:'完成',href:'/applydetails'},
-	{faceUrl:"https://asset.91hc.com/src/images/index/new-center-1.png",name:'张零食',timer:'2018-10-20',status:'xxx',href:'/applydetails'},
+	{faceUrl:"https://asset.91hc.com/src/images/index/new-center-1.png",name:'张零食',phone:'18959333600',href:'/itemrecord'},
+	{faceUrl:"https://asset.91hc.com/src/images/index/new-center-1.png",name:'张食',phone:'13774770527',href:'/itemrecord'},
+	{faceUrl:"https://asset.91hc.com/src/images/index/new-center-1.png",name:'张零食',phone:'13774770527',href:'/itemrecord'},
 ]
 
-class Details extends Component{
+class Promoter extends Component{
 	  constructor(props) {
 	    super(props);
 	    this.state = {
@@ -37,7 +37,7 @@ class Details extends Component{
 	render(){
 		return(
 			<div>
-				<Header title='用户详情'/>
+				<Header title='推广员列表'/>
 				<PullToRefresh
 				    ref={el => this.ptr = el}
 				    style={{
@@ -53,7 +53,7 @@ class Details extends Component{
 					<Strip>共有6条记录</Strip>
 					
 					{
-						data.map((value,key)=><List faceUrl={value.faceUrl} name={value.name} timer={value.timer} status={value.status} key={key} href={value.href}/>)
+						data.map((value,key)=><List faceUrl={value.faceUrl} name={value.name} phone={value.phone} href={value.href} detailButtonText="项目记录" key={key}/>)
 					}
 					
 				</PullToRefresh>
@@ -62,4 +62,4 @@ class Details extends Component{
 	}
 }
 
-export default Details
+export default Promoter

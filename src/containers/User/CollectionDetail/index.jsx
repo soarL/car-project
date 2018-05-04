@@ -2,41 +2,40 @@ import React,{ Component } from 'react'
 import ReactDOM from 'react-dom'
 import Header from '@/components/Header'
 import './index.less'
-import { PullToRefresh ,Flex ,WhiteSpace,Button} from 'antd-mobile'
+import { PullToRefresh ,Flex,Button} from 'antd-mobile'
 import Title from '@/components/Title'
 
 
 
 const data =[
 	{
-		title:'车辆信息',data:[
-		{title:'行驶城市',value:'福建省鼓楼区'},
-		{title:'车牌号码',value:'未上牌'},
+		title:'逾期记录',data:[
+		{title:'逾期记录',value:'3期'},
+		{title:'实还日期',value:'2017-10-10'},
+		{title:'拖欠本金',value:'500元'},
+		{title:'拖欠利息',value:'13元'},
 	]},
 	{
-		title:'保险信息',data:[
-		{title:'保险公司',value:'中国人寿'},
-		{title:'交强险+车船险',value:'中国人寿'},
-		{title:'生效时间',value:'2018-05-02'},
-		{title:'商业主险',value:'投保'},
-		{title:'生效时间',value:'2018-04-02'},
+		title:'催收记录1',data:[
+		{title:'催收方式',value:'上门'},
+		{title:'催收人员',value:'催收员A'},
+		{title:'催收时间',value:'2018-05-02'},
+		{title:'催收结果',value:'客户答应下午3点前还款'},
 	]},
 	{
-		title:"商业主险",data:[
-		{title:'车辆损失险',value:'投保'},
-		{title:'第三责任险',value:'5万'},
-		{title:'全车盗抢险',value:'投保'},
-		{title:'司机责任险',value:'1万/人'},
-		{title:'乘客责任险',value:'1万/人'},
+		title:"催收记录2",data:[
+		{title:'催收方式',value:'上门'},
+		{title:'催收人员',value:'催收员D'},
+		{title:'催收时间',value:'2018-05-02'},
+		{title:'催收结果',value:'客户答应下午3点前还款'},
 	]},
 	{
-		title:'商业附加险',data:[
-		{'title':'玻璃破碎险',value:'国产'},
-		{'title':'自燃损失险',value:'不投保'},
-		{'title':'发动机涉水险',value:'投保'},
-		{'title':'划痕险',value:'投保'},
-		{'title':'不记免赔率险',value:'投保'},
-	]}
+		title:"催收记录3",data:[
+		{title:'催收方式',value:'上门'},
+		{title:'催收人员',value:'催收员F'},
+		{title:'催收时间',value:'2018-05-02'},
+		{title:'催收结果',value:'客户答应下午3点前还款'},
+	]},
 ]
 
 class ItemGroup extends Component{
@@ -62,7 +61,7 @@ class Item extends Component{
 	}
 }
 
-class ApplyDetails extends Component{
+class CollectionDetail extends Component{
 	  constructor(props) {
 	    super(props);
 	    this.state = {
@@ -86,7 +85,7 @@ class ApplyDetails extends Component{
 	render(){
 		return(
 			<div className='apply-details'>
-				<Header title='申请详情'/>
+				<Header title='催收记录详情'/>
 				<PullToRefresh
 				    ref={el => this.ptr = el}
 				    style={{
@@ -117,15 +116,9 @@ class ApplyDetails extends Component{
 							data.map((value,key)=><ItemGroup title={value.title} data={value.data} key={key}/>)
 						}
 					</div>
-					<Title href='/amount'>证件清单</Title>
-
-					<WhiteSpace/>
-
-					<Title href='/paymenthistory'>还款详情</Title>
+		
 					<div  className='button-box'>
-						<Button type="primary" >确定</Button>
-						<WhiteSpace/>
-						<Button type="default" >取消</Button>
+						<Button type="primary" onClick={()=>{this.props.history.push('/addcollection')}}>填写催收记录</Button>
 					</div>
 					<div className='heights'></div>
 				</PullToRefresh>
@@ -134,4 +127,4 @@ class ApplyDetails extends Component{
 	}
 }
 
-export default ApplyDetails
+export default CollectionDetail

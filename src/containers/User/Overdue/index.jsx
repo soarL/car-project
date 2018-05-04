@@ -8,12 +8,12 @@ import List from '@/components/List'
 
 
 const data = [
-	{faceUrl:"https://asset.91hc.com/src/images/index/new-center-1.png",name:'张零食',timer:'2018-10-20',status:'申请中',href:'/applydetails'},
-	{faceUrl:"https://asset.91hc.com/src/images/index/new-center-1.png",name:'张零食',timer:'2018-10-20',status:'完成',href:'/applydetails'},
-	{faceUrl:"https://asset.91hc.com/src/images/index/new-center-1.png",name:'张零食',timer:'2018-10-20',status:'xxx',href:'/applydetails'},
+	{faceUrl:"https://asset.91hc.com/src/images/index/new-center-1.png",name:'张零食',href:'/collectiondetail',overdue:{laterDay:'20天',periods:'1'}},
+	{faceUrl:"https://asset.91hc.com/src/images/index/new-center-1.png",name:'张零食',href:'/collectiondetail',overdue:{laterDay:'42天',periods:'3'}},
+	{faceUrl:"https://asset.91hc.com/src/images/index/new-center-1.png",name:'张零食',href:'/collectiondetail',overdue:{laterDay:'12天',periods:'5'}},
 ]
 
-class Details extends Component{
+class Overdue extends Component{
 	  constructor(props) {
 	    super(props);
 	    this.state = {
@@ -37,7 +37,7 @@ class Details extends Component{
 	render(){
 		return(
 			<div>
-				<Header title='用户详情'/>
+				<Header title='逾期还款客户'/>
 				<PullToRefresh
 				    ref={el => this.ptr = el}
 				    style={{
@@ -50,10 +50,10 @@ class Details extends Component{
 				    onRefresh={this.onRefresh}
 				    distanceToRefresh={window.devicePixelRatio * 25}
 				>
-					<Strip>共有6条记录</Strip>
+					<Strip>共有{data.length}条记录</Strip>
 					
 					{
-						data.map((value,key)=><List faceUrl={value.faceUrl} name={value.name} timer={value.timer} status={value.status} key={key} href={value.href}/>)
+						data.map((value,key)=><List faceUrl={value.faceUrl} name={value.name} key={key} href={value.href} overdue={value.overdue} detailButtonText='催收记录'/>)
 					}
 					
 				</PullToRefresh>
@@ -62,4 +62,4 @@ class Details extends Component{
 	}
 }
 
-export default Details
+export default Overdue
