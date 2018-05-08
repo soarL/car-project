@@ -77,6 +77,7 @@ class CollectionDetail extends Component{
 		let data = await userInfoAPI.workUserCollect({oddNumber,intPeriod})
 		console.log(data)
 		this.setState({
+			data,
 			name:data.name,
 			phone:data.phone,
 			faceScr:data.faceScr,
