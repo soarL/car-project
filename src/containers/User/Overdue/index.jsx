@@ -5,13 +5,7 @@ import './index.less'
 import { PullToRefresh } from 'antd-mobile';
 import Strip from '@/components/Strip'
 import List from '@/components/List'
-
-
-const data = [
-	{faceUrl:"https://asset.91hc.com/src/images/index/new-center-1.png",name:'张零食',href:'/collectiondetail',overdue:{laterDay:'20天',periods:'1'}},
-	{faceUrl:"https://asset.91hc.com/src/images/index/new-center-1.png",name:'张零食',href:'/collectiondetail',overdue:{laterDay:'42天',periods:'3'}},
-	{faceUrl:"https://asset.91hc.com/src/images/index/new-center-1.png",name:'张零食',href:'/collectiondetail',overdue:{laterDay:'12天',periods:'5'}},
-]
+import userInfoAPI from '@/api/userInfo'
 
 class Overdue extends Component{
 	  constructor(props) {
@@ -20,19 +14,24 @@ class Overdue extends Component{
 	      refreshing: false,
 	      down: true,
 	      height: document.documentElement.clientHeight,
+	      data:[]
 	    };
 	  }
-	 componentDidMount() {
+	async componentDidMount() {
 	    const hei = this.state.height - ReactDOM.findDOMNode(this.ptr).offsetTop;
+	    let data = await userInfoAPI.workUserOddWithin()
 	    this.setState({
 	      height: hei,
+	      data
 	    })
 	}
-	onRefresh =()=>{
+	onRefresh = async ()=>{
 		this.setState({ refreshing: true })
-		setTimeout(() => {
-		  this.setState({ refreshing: false })
-		}, 1000)
+		let data = await userInfoAPI.workUserOddWithin()
+		this.setState({
+		  data,
+		  refreshing: false
+		})
 	}
 	render(){
 		return(
@@ -50,10 +49,10 @@ class Overdue extends Component{
 				    onRefresh={this.onRefresh}
 				    distanceToRefresh={window.devicePixelRatio * 25}
 				>
-					<Strip>共有{data.length}条记录</Strip>
+					<Strip>共有{this.state.data.length}条记录</Strip>
 					
 					{
-						data.map((value,key)=><List faceUrl={value.faceUrl} name={value.name} key={key} href={value.href} overdue={value.overdue} detailButtonText='催收记录'/>)
+						this.state.data.map((value,key)=><List faceUrl={value.avatar} name={value.nickName} key={key} href={"/collectiondetail/" + value.oddNumber + '/' + value.intPeriod } overdue={{periods:value.intPeriod,laterDay:value.laterday}} detailButtonText='催收记录'/>)
 					}
 					
 				</PullToRefresh>

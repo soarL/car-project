@@ -6,34 +6,34 @@ import { PullToRefresh } from 'antd-mobile';
 import Strip from '@/components/Strip'
 import List from '@/components/List'
 
-
-const data = [
-	{faceUrl:"https://asset.91hc.com/src/images/index/new-center-1.png",name:'张零食',repayTimer:'2018-10-20',repayMoney:'1200',href:'/PaymentHistory'},
-	{faceUrl:"https://asset.91hc.com/src/images/index/new-center-1.png",name:'张零',repayTimer:'2018-10-20',repayMoney:'5000',href:'/PaymentHistory'},
-	{faceUrl:"https://asset.91hc.com/src/images/index/new-center-1.png",name:'张食',repayTimer:'2018-10-20',repayMoney:'600',href:'/PaymentHistory'},
-]
+import userInfoAPI from '@/api/userInfo'
 
 class RepayHistory extends Component{
-	  constructor(props) {
+	constructor(props){
 	    super(props);
 	    this.state = {
 	      refreshing: false,
 	      down: true,
 	      height: document.documentElement.clientHeight,
+	      data:[],
 	    };
-	  }
-	 componentDidMount() {
+	}
+
+	async componentDidMount(){
 	    const hei = this.state.height - ReactDOM.findDOMNode(this.ptr).offsetTop;
+	    let data = await userInfoAPI.repayHistory()
 	    this.setState({
 	      height: hei,
+	      data,
 	    })
 	}
-	onRefresh =()=>{
+
+	onRefresh =async ()=>{
 		this.setState({ refreshing: true })
-		setTimeout(() => {
-		  this.setState({ refreshing: false })
-		}, 1000)
+		let data = await userInfoAPI.repayHistory()
+		this.setState({ refreshing: false ,data})
 	}
+
 	render(){
 		return(
 			<div>
@@ -50,10 +50,10 @@ class RepayHistory extends Component{
 				    onRefresh={this.onRefresh}
 				    distanceToRefresh={window.devicePixelRatio * 25}
 				>
-					<Strip>共有6条还款记录</Strip>
+					<Strip>共有{this.state.data.length}条还款记录</Strip>
 					
 					{
-						data.map((value,key)=><List faceUrl={value.faceUrl} name={value.name} repayTimer={value.repayTimer} repayMoney={value.repayMoney} href={value.href} key={key}/>)
+						this.state.data.map((value,key)=><List faceUrl={value.faceSrc} name={value.user} repayTimer={value.timer} repayMoney={value.money} href={"/PaymentHistory/" + value.oddNumber} key={key}/>)
 					}
 					
 				</PullToRefresh>

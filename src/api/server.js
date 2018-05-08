@@ -28,7 +28,17 @@ export default class Server {
         ...option
       }
       axios.request(_options).then(res => {
-        resolve(typeof res.data === 'object' ? res.data : JSON.parse(res.data))
+        if(typeof res.data === 'object'){
+          resolve(res.data)
+        }else{
+          try{
+            resolve(JSON.parse(res.data))
+          }
+          catch(error){
+            console.error(error)
+            resolve(res.data)
+          }
+        }
       },error => {
         if(error.response){
             reject(error.response.data)
@@ -66,7 +76,17 @@ export default class Server {
       }
 
       axios.request(_options).then(res => {
-        resolve(typeof res.data === 'object' ? res.data : JSON.parse(res.data))
+        if(typeof res.data === 'object'){
+          resolve(res.data)
+        }else{
+          try{
+            resolve(JSON.parse(res.data))
+          }
+          catch(error){
+            console.error(error)
+            resolve(res.data)
+          }
+        }
       },error => {
         if(error.response){
             reject(error.response.data)

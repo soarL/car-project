@@ -148,13 +148,13 @@ class App extends Component {
             		<Route path="/home/result" exact component={ AsyncResult } />
             		<Route path="/user" component={ AsyncUserIndex } />
                 <Route path="/details" component={ AsyncDetails } />
-                <Route path="/applydetails" component={ AsyncApplyDetails } />
-                <Route path="/amount" component={ AsyncAmount } />
-                <Route path="/paymenthistory" component={ AsyncPaymentHistory } />
+                <Route path="/applydetails/:strWorkNum" component={ AsyncApplyDetails } />
+                <Route path="/amount/:strWorkNum" component={ AsyncAmount } />
+                <Route path="/paymenthistory/:strWorkNum" component={ AsyncPaymentHistory } />
                 <Route path="/repayhistory" component={ AsyncRepayHistory } />
                 <Route path="/recentrepay" component={ AsyncRecentRepay } />
                 <Route path="/overdue" component={ AsyncOverdue } />
-                <Route path="/collectiondetail" component={ AsyncCollectionDetail } />
+                <Route path="/collectiondetail/:oddNumber/:intPeriod" component={ AsyncCollectionDetail } />
                 <Route path="/addcollection" component={ AsyncAddCollection } />
                 <Route path="/promoter" component={ AsyncPromoter } />
                 <Route path="/itemrecord" component={ AsyncItemRecord } />

@@ -5,13 +5,8 @@ import './index.less'
 import { PullToRefresh } from 'antd-mobile';
 import Strip from '@/components/Strip'
 import List from '@/components/List'
+import userInfoAPI from '@/api/userInfo'
 
-
-const data = [
-	{faceUrl:"https://asset.91hc.com/src/images/index/new-center-1.png",name:'张零食',timer:'2018-10-20',status:'申请中',href:'/applydetails'},
-	{faceUrl:"https://asset.91hc.com/src/images/index/new-center-1.png",name:'张零食',timer:'2018-10-20',status:'完成',href:'/applydetails'},
-	{faceUrl:"https://asset.91hc.com/src/images/index/new-center-1.png",name:'张零食',timer:'2018-10-20',status:'xxx',href:'/applydetails'},
-]
 
 class Details extends Component{
 	  constructor(props) {
@@ -20,19 +15,21 @@ class Details extends Component{
 	      refreshing: false,
 	      down: true,
 	      height: document.documentElement.clientHeight,
+	      data:[]
 	    };
 	  }
-	 componentDidMount() {
+	 async componentDidMount() {
 	    const hei = this.state.height - ReactDOM.findDOMNode(this.ptr).offsetTop;
+	    let data = await userInfoAPI.details()
 	    this.setState({
 	      height: hei,
+	      data
 	    })
 	}
-	onRefresh =()=>{
+	onRefresh =async ()=>{
 		this.setState({ refreshing: true })
-		setTimeout(() => {
-		  this.setState({ refreshing: false })
-		}, 1000)
+		let data = await userInfoAPI.details()
+		this.setState({ refreshing: false ,data})
 	}
 	render(){
 		return(
@@ -53,7 +50,7 @@ class Details extends Component{
 					<Strip>共有6条记录</Strip>
 					
 					{
-						data.map((value,key)=><List faceUrl={value.faceUrl} name={value.name} timer={value.timer} status={value.status} key={key} href={value.href}/>)
+						this.state.data.map((value,key)=><List faceUrl={value.faceSrc} name={value.user} timer={value.timer} status={value.eStatus} key={key} href={"/applydetails/" + value.strWorkNum } />)
 					}
 					
 				</PullToRefresh>

@@ -1,12 +1,13 @@
 import React,{ Component } from 'react'
 import Header from '@/components/Header'
-import { Link ,withRouter} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import './index.less'
-import { WhiteSpace,Icon,Flex ,Button} from 'antd-mobile'
+import { WhiteSpace,Icon,Flex } from 'antd-mobile'
 import CustomIcon from '@/components/CustomIcon'
-
+import userInfoAPI from '@/api/userInfo'
 
 class Item extends Component{
+
 	render(){
 		return(
 			<div className='item'>
@@ -28,20 +29,25 @@ class Item extends Component{
 	}
 }
 
-class UnLogin extends Component{
-	render(){
-		return(
-			<Flex align='center'>
-				<Button type='primary' size='small' onClick={()=>{this.props.history.push('/login')}}>登录</Button>&nbsp;&nbsp;&nbsp;
-				<Button type='primary' size='small' onClick={()=>{this.props.history.push('/register')}}>注册</Button>
-			</Flex>
-		)
-	}
-}
-
-UnLogin = withRouter(UnLogin)
-
 class Index extends Component{
+	constructor(props){
+		super(props)
+		this.state={
+			data:{
+				avatarUrl:null,
+				nickName:null,
+				strPhone:"",
+				strUserId:"",
+				strUserType:"3",
+			}
+		}
+	}
+	async componentDidMount() {
+		let data = await userInfoAPI.userInfo(this.props.history)
+		this.setState({
+			data
+		})
+	}
 	render(){
 		return(
 			<div className='user-box'>
@@ -50,14 +56,12 @@ class Index extends Component{
 					<Flex.Item>
 						<Flex justify='center'>
 							<div className='img-box'>
-								<img src={require('./asset/idcar.svg')} alt="touxiang"/>
+								<img src={this.state.data.avatarUrl ? this.state.data.avatarUrl:require('./asset/idcar.svg')} alt="touxiang"/>
 							</div>				
 						</Flex>
 					</Flex.Item>
 					<Flex.Item className='user-name'>
-						{
-							this.props.isLogin ? <div><p>梦醒时分</p><p>手机：18959333600</p></div> : <UnLogin/>
-						}
+					<div><p>{this.state.data.nickName ? this.state.data.nickName : "nickName"}</p><p>手机：{this.state.data.strPhone}</p></div>
 					</Flex.Item>
 				</Flex>
 
@@ -65,10 +69,18 @@ class Index extends Component{
 				<Item href='/repayhistory' type={require('./asset/document.svg')}> 还款记录</Item>
 				<WhiteSpace />
 				<WhiteSpace />
-				<Item href='/recentrepay' type={require('./asset/document_fill.svg')}> 近期还款客户</Item>
-				<Item href='/overdue' type={require('./asset/financial_fill.svg')}> 逾期客户列表</Item>
-				<Item href='/promoter' type={require('./asset/accessory.svg')}> 推广员列表</Item>
-				<Item href='/qrcode' type={require('./asset/qrcode.svg')}> 我的推广码</Item>
+					{
+						this.state.data.strUserType ==='1' ? <Item href='/recentrepay' type={require('./asset/document_fill.svg')}> 近期还款客户</Item> : ""
+					}
+					{
+						this.state.data.strUserType ==='1' ? <Item href='/overdue' type={require('./asset/financial_fill.svg')}> 逾期客户列表</Item> : ""
+					}
+					{
+						this.state.data.strUserType ==='1' || this.state.data.strUserType ==='2' ? <Item href='/promoter' type={require('./asset/accessory.svg')}> 推广员列表</Item> : ""
+					}
+					{
+						this.state.data.strUserType ==='1' || this.state.data.strUserType ==='2'? <Item href='/qrcode' type={require('./asset/qrcode.svg')}> 我的推广码</Item> : ""
+					}
 				<WhiteSpace />
 				<WhiteSpace />
 			</div>

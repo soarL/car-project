@@ -23,18 +23,36 @@ const user = [
 		{max:9,message:'用户名长度不能超过9位'},
 		{required:true, message:'该项为必选项'}]
 
+const phone = [
+		{min:4,message:'请输入11位手机号码'},
+		{max:11,message:'请输入11位手机号码'},
+		{required:true, message:'请填写手机号码'}]
+
+const strFriendPhone = [
+		{min:4,message:'请输入11位手机号码'},
+		{max:11,message:'请输入11位手机号码'},
+		{required:false}]
+
 const password=[
-		{min:3,message:'密码长度必须大于3位'},
-		{max:9,message:'密码长度不能超过9位'},
-		{required:true, message:'该项为必选项'}]
+		{max:16,message:'密码长度不能超过16位'},
+		{required:true, message:'请填写登录密码'}]
+
+const passwordAgain=(message,pwd)=>{
+	return (rule,value,callback)=>{
+	if (value && value !== pwd) {
+	      callback(message);
+	    } else {
+	      callback();
+	    }
+	}
+}
 
 const email =[
 		{type: 'email', message: 'The input is not valid E-mail!'},
 		{required: false, message: 'Please input your E-mail!'}]
 
 const smsCode = [
-		{min:6,message:'必须为6位数验证码'},
-		{max:6,message:'验证码只能为6位数'},
+		{max:6,message:'验证码为6位数字'},
 		{required:true,message:'请填写验证码'}]
 
 const isDisabled = (getFieldsError)=>{
@@ -54,9 +72,12 @@ const isChecked =(message)=>{
 
 export{
 	user,
+	phone,
 	email,
 	password,
 	isDisabled,
 	isChecked,
+	strFriendPhone,
+	passwordAgain,
 	smsCode
 } 

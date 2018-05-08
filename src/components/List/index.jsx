@@ -14,13 +14,13 @@ const Items = Flex.Item
 class BoxLeft extends Component{
 	render(){
 		return(
-			<Items style={{flex:6}}>
+			<Items style={{flex:7}}>
 				<Flex>
 					{
 						this.props.status ? <div className='status'>申请状态：{this.props.status}</div> : ''
 					}
 					{
-						this.props.repayMoney ? <div className='status'>还款金额￥：{this.props.repayMoney}</div> : ''
+						this.props.repayMoney ? <div className='status'>还款金额：{this.props.repayMoney}</div> : ''
 					}
 					{
 						this.props.detailButtonText ? <Button type='primary' size='small'>{this.props.detailButtonText}</Button> : ''

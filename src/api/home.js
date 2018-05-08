@@ -1,8 +1,12 @@
 import Server from '@/api/server'
 
 class Home extends Server{
-	async getData(){
-		let data = await this.POST('/api/index/article/host',{'limit':3})
+	async login(params){
+		let data = await this.POST('/yii2-insurance/web/index.php?r=api/user/bind',params)
+		return data
+	}
+	async register(params){
+		let data = await this.POST('/yii2-insurance/web/index.php?r=api/user/bind',params)
 		return data
 	}
 }

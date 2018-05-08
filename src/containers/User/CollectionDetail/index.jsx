@@ -1,10 +1,9 @@
 import React,{ Component } from 'react'
-import ReactDOM from 'react-dom'
 import Header from '@/components/Header'
 import './index.less'
-import { PullToRefresh ,Flex,Button} from 'antd-mobile'
+import { Flex,Button} from 'antd-mobile'
 import Title from '@/components/Title'
-
+import userInfoAPI from '@/api/userInfo'
 
 
 const data =[
@@ -62,53 +61,43 @@ class Item extends Component{
 }
 
 class CollectionDetail extends Component{
-	  constructor(props) {
-	    super(props);
-	    this.state = {
-	      refreshing: false,
-	      down: true,
-	      height: document.documentElement.clientHeight,
-	    };
-	  }
-	 componentDidMount() {
-	    const hei = this.state.height - ReactDOM.findDOMNode(this.ptr).offsetTop;
-	    this.setState({
-	      height: hei,
-	    })
+	constructor(props) {
+		super(props);
+		this.state={
+			data:data,
+			name:"",
+			phone:'',
+			faceScr:""
+		}
+
 	}
-	onRefresh =()=>{
-		this.setState({ refreshing: true })
-		setTimeout(() => {
-		  this.setState({ refreshing: false })
-		}, 1000)
+	async componentDidMount(){
+		let oddNumber = this.props.match.params.oddNumber
+		let intPeriod = this.props.match.params.intPeriod
+		let data = await userInfoAPI.workUserCollect({oddNumber,intPeriod})
+		console.log(data)
+		this.setState({
+			name:data.name,
+			phone:data.phone,
+			faceScr:data.faceScr,
+		})
 	}
+
 	render(){
 		return(
 			<div className='apply-details'>
 				<Header title='催收记录详情'/>
-				<PullToRefresh
-				    ref={el => this.ptr = el}
-				    style={{
-				      height: this.state.height,
-				      overflow: 'auto',
-				    }}
-				    indicator={this.state.down ? {} : { deactivate: '上拉可以刷新' }}
-				    direction={this.state.down ? 'down' : 'up'}
-				    refreshing={this.state.refreshing}
-				    onRefresh={this.onRefresh}
-				    distanceToRefresh={window.devicePixelRatio * 25}
-				>
 					<Flex className='face-img-box'>
 						<Flex.Item>
 							<Flex justify='center'>
 								<div className='img-box'>
-									<img src={require('./asset/idcar.svg')} alt="touxiang"/>
+									<img src={this.state.faceSrc ? this.state.faceSrc :require('./asset/idcar.svg')} alt="touxiang"/>
 								</div>				
 							</Flex>
 						</Flex.Item> 
 						<Flex.Item className='user-name'>
-							<p>梦醒时分</p>
-							<p>手机：18959333600</p>
+							<p>{this.state.name}</p>
+							<p>手机：{this.state.phone}</p>
 						</Flex.Item>
 					</Flex>
 					<div className='details'>
@@ -121,7 +110,6 @@ class CollectionDetail extends Component{
 						<Button type="primary" onClick={()=>{this.props.history.push('/addcollection')}}>填写催收记录</Button>
 					</div>
 					<div className='heights'></div>
-				</PullToRefresh>
 			</div>
 		)
 	}

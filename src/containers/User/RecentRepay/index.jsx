@@ -5,13 +5,7 @@ import './index.less'
 import { PullToRefresh } from 'antd-mobile';
 import Strip from '@/components/Strip'
 import List from '@/components/List'
-
-
-const data = [
-	{faceUrl:"https://asset.91hc.com/src/images/index/new-center-1.png",name:'张零食',href:'/repayhistory',recentRepay:{timer:'2018-02-10',money:'2020',periods:'1'}},
-	{faceUrl:"https://asset.91hc.com/src/images/index/new-center-1.png",name:'张零食',href:'/repayhistory',recentRepay:{timer:'2018-02-10',money:'2020',periods:'3'}},
-	{faceUrl:"https://asset.91hc.com/src/images/index/new-center-1.png",name:'张零食',href:'/repayhistory',recentRepay:{timer:'2018-02-10',money:'2020',periods:'4'}},
-]
+import userInfoAPI from '@/api/userInfo'
 
 class RecentRepay extends Component{
 	  constructor(props) {
@@ -20,19 +14,24 @@ class RecentRepay extends Component{
 	      refreshing: false,
 	      down: true,
 	      height: document.documentElement.clientHeight,
+	      data:[]
 	    };
 	  }
-	 componentDidMount() {
+	 async componentDidMount() {
 	    const hei = this.state.height - ReactDOM.findDOMNode(this.ptr).offsetTop;
+	    let data = await userInfoAPI.workUserOdd()
 	    this.setState({
 	      height: hei,
+	      data,
 	    })
 	}
-	onRefresh =()=>{
+	onRefresh = async ()=>{
 		this.setState({ refreshing: true })
-		setTimeout(() => {
-		  this.setState({ refreshing: false })
-		}, 1000)
+		let data = await userInfoAPI.workUserOdd()
+		this.setState({
+		  data,
+		  refreshing: false 
+		})
 	}
 	render(){
 		return(
@@ -50,10 +49,10 @@ class RecentRepay extends Component{
 				    onRefresh={this.onRefresh}
 				    distanceToRefresh={window.devicePixelRatio * 25}
 				>
-					<Strip>共有6条记录</Strip>
+					<Strip>共有{this.state.data.length}条记录</Strip>
 					
 					{
-						data.map((value,key)=><List faceUrl={value.faceUrl} name={value.name} key={key} href={value.href} recentRepay={value.recentRepay} detailButtonText='还款记录'/>)
+						this.state.data.map((value,key)=><List faceUrl={value.faceUrl} name={value.nickName} key={key} href={ "/repayhistory/"+ value.strWorkNum } recentRepay={{money:value.money,timer:value.tOperateTime,periods:value.intPeriod}} detailButtonText='还款记录'/>)
 					}
 					
 				</PullToRefresh>

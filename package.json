@@ -115,5 +115,5 @@
     "less-loader": "^4.0.5",
     "rc-form": "^2.2.0"
   },
-  "proxy": "http://www.linzantian.com"
+  "proxy": "http://192.168.1.40"
 }
