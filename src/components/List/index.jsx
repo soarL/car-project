@@ -23,6 +23,9 @@ class BoxLeft extends Component{
 						this.props.repayMoney ? <div className='status'>还款金额：{this.props.repayMoney}</div> : ''
 					}
 					{
+						this.props.borrowMoney ? <div className='status'>借款金额：{this.props.borrowMoney}</div> : ''
+					}
+					{
 						this.props.detailButtonText ? <Button type='primary' size='small'>{this.props.detailButtonText}</Button> : ''
 					}
 				</Flex>
@@ -40,6 +43,9 @@ class Center extends Component{
 				</div>
 				{
 					this.props.timer ? <div className='font-c'>申请时间：{this.props.timer}</div> : ''
+				}
+				{
+					this.props.recheckTimer ? <div className='font-c'>复审时间：{this.props.recheckTimer}</div> : ''
 				}
 				{
 					this.props.borrow ? <div className='font-c'>借款总额：{this.props.borrow}&nbsp;&nbsp;借款期数：{this.props.periods}</div> : ''
@@ -82,8 +88,8 @@ class List extends Component{
 							</div>
 						</Flex>
 					</Items>
-					<Center name={this.props.name} timer={ this.props.timer } borrow={this.props.borrow} periods={this.props.periods} repayTimer={this.props.repayTimer} recentRepay = { this.props.recentRepay} overdue={this.props.overdue} phone={this.props.phone}/>
-					<BoxLeft status={this.props.status} repayMoney={this.props.repayMoney} detailButtonText={this.props.detailButtonText}/>
+					<Center name={this.props.name} timer={ this.props.timer } borrow={this.props.borrow} periods={this.props.periods} repayTimer={this.props.repayTimer} recentRepay = { this.props.recentRepay} overdue={this.props.overdue} phone={this.props.phone} recheckTimer={this.props.recheckTimer}/>
+					<BoxLeft status={this.props.status} repayMoney={this.props.repayMoney} detailButtonText={this.props.detailButtonText} borrowMoney={this.props.borrowMoney}/>
 				</Flex>
 			</div>
 		)

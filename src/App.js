@@ -46,6 +46,11 @@ const AsyncApplyDetails = Loadable({
   loading: loading
 })
 
+const AsyncWorkDetails = Loadable({
+  loader: () => import('@/containers/User/WorkDetails/index'),
+  loading: loading
+})
+
 const AsyncAmount = Loadable({
   loader: () => import('@/containers/User/Amount/index'),
   loading: loading
@@ -122,6 +127,7 @@ class App extends Component {
     AsyncCompany.preload()
     AsyncUpload.preload()
     AsyncApplyDetails.preload()
+    AsyncWorkDetails.preload()
     AsyncAmount.preload()
     AsyncPaymentHistory.preload()
     AsyncRepayHistory.preload()
@@ -149,15 +155,16 @@ class App extends Component {
             		<Route path="/user" component={ AsyncUserIndex } />
                 <Route path="/details" component={ AsyncDetails } />
                 <Route path="/applydetails/:strWorkNum" component={ AsyncApplyDetails } />
+                <Route path="/workdetails/:strWorkNum" component={ AsyncWorkDetails } />
                 <Route path="/amount/:strWorkNum" component={ AsyncAmount } />
                 <Route path="/paymenthistory/:strWorkNum" component={ AsyncPaymentHistory } />
                 <Route path="/repayhistory" component={ AsyncRepayHistory } />
                 <Route path="/recentrepay" component={ AsyncRecentRepay } />
                 <Route path="/overdue" component={ AsyncOverdue } />
                 <Route path="/collectiondetail/:oddNumber/:intPeriod" component={ AsyncCollectionDetail } />
-                <Route path="/addcollection" component={ AsyncAddCollection } />
+                <Route path="/addcollection/:oddNumber/:intPeriod/" component={ AsyncAddCollection } />
                 <Route path="/promoter" component={ AsyncPromoter } />
-                <Route path="/itemrecord" component={ AsyncItemRecord } />
+                <Route path="/itemrecord/:strUserId" component={ AsyncItemRecord } />
                 <Route path="/qrcode" component={ AsyncQRcode } />
                 <Route path="/login" component={ AsyncLogin } />
             		<Route path="/register" component={ AsyncRegister } />

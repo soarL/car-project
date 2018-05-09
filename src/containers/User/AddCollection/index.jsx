@@ -4,17 +4,7 @@ import './index.less'
 import { Flex,Button ,InputItem ,List ,DatePicker,TextareaItem,WhiteSpace} from 'antd-mobile'
 import Title from '@/components/Title'
 import { createForm } from 'rc-form';
-
-
-const data =[
-	{
-		title:'逾期记录',data:[
-		{title:'逾期记录',value:'3期'},
-		{title:'实还日期',value:'2017-10-10'},
-		{title:'拖欠本金',value:'500元'},
-		{title:'拖欠利息',value:'13元'},
-	]},
-]
+import userInfoAPI from '@/api/userInfo'
 
 class ItemGroup extends Component{
 	render(){
@@ -43,7 +33,30 @@ class AddCollection extends Component{
 	constructor(props){
 		super(props)
 		this.state={
-			date:new Date(Date.now())
+			date:new Date(Date.now()),
+			faceSrc:'',
+			name:'',
+			phone:'',
+			data:[]
+		}
+	}
+	submit=(e)=>{
+		this.props.form.validateFields((err, values) => {
+			values.tCreateTime = new Date().getTime(this.state.date)
+			values.oddNumber = this.props.match.params.oddNumber
+			values.intPeriod = this.props.match.params.intPeriod
+		    userInfoAPI.addCollection(values)
+		})
+	}
+	componentDidMount() {
+		if(this.props.location.query){
+		let data = this.props.location.query
+			this.setState({
+				faceSrc:data.faceSrc,
+				name:data.name,
+				phone:data.phone,
+				data:data.data
+			})
 		}
 	}
 	render(){
@@ -55,28 +68,30 @@ class AddCollection extends Component{
 					<Flex.Item>
 						<Flex justify='center'>
 							<div className='img-box'>
-								<img src={require('./asset/idcar.svg')} alt="touxiang"/>
+								<img src={this.state.faceSrc ? this.state.faceSrc : require('./asset/idcar.svg')} alt="touxiang"/>
 							</div>				
 						</Flex>
 					</Flex.Item> 
 					<Flex.Item className='user-name'>
-						<p>梦醒时分</p>
-						<p>手机：18959333600</p>
+						<p>{this.state.name}</p>
+						<p>手机：{this.state.phone}</p>
 					</Flex.Item>
 				</Flex>
 				<div className='details'>
 					{
-						data.map((value,key)=><ItemGroup title={value.title} data={value.data} key={key}/>)
+						this.state.data.map((value,key)=><ItemGroup title={value.title} data={value.data} key={key}/>)
 					}
 				</div>
 				<WhiteSpace size='lg'/>
 				<List>
 					<InputItem
+					 {...getFieldProps('strWay')}
 					  type='text'
 					  placeholder="必填!"
 					  clear
 					>催收方式：</InputItem>
 					<InputItem
+					 {...getFieldProps('strUser')}
 					  type='text'
 					  placeholder="必填!"
 					  clear
@@ -93,7 +108,7 @@ class AddCollection extends Component{
 					</DatePicker>
 
 					<TextareaItem
-			        {...getFieldProps('count')}
+			        {...getFieldProps('strCollectResults')}
 			        placeholder='必填！'
 			        rows={5}
 			        count={999}
@@ -101,7 +116,7 @@ class AddCollection extends Component{
 				</List>
 
 				<div  className='button-box'>
-					<Button type="primary">提交</Button>
+					<Button type="primary" onClick={this.submit}>提交</Button>
 				</div>
 			</div>
 		)

@@ -34,7 +34,7 @@ class Details extends Component{
 	render(){
 		return(
 			<div>
-				<Header title='用户详情'/>
+				<Header title='申请详情'/>
 				<PullToRefresh
 				    ref={el => this.ptr = el}
 				    style={{
@@ -47,7 +47,7 @@ class Details extends Component{
 				    onRefresh={this.onRefresh}
 				    distanceToRefresh={window.devicePixelRatio * 25}
 				>
-					<Strip>共有6条记录</Strip>
+					<Strip>共有{this.state.data.length}条记录</Strip>
 					
 					{
 						this.state.data.map((value,key)=><List faceUrl={value.faceSrc} name={value.user} timer={value.timer} status={value.eStatus} key={key} href={"/applydetails/" + value.strWorkNum } />)

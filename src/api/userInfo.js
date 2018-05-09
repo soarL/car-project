@@ -11,7 +11,6 @@ class UserInfo extends Server{
 		return data
 	}
 
-
 	async userInfo(history){
 		let data = await this.POST('/yii2-insurance/web/index.php?r=api/user/get-user-info')
 		if(data.ret==='1000'){
@@ -55,6 +54,7 @@ class UserInfo extends Server{
 		
 		return data.data.content
 	}
+	
 	async workUserOddWithin(params){
 		let data = await this.POST('/yii2-insurance/web/index.php?r=api/work/work-user-odd-within')
 		
@@ -67,6 +67,33 @@ class UserInfo extends Server{
 		return data.data.content
 	}
 
+	async addCollection(params){
+		let data = await this.POST('/yii2-insurance/web/index.php?r=api/work/work-write-money',params)
+		
+		if(data.ret==='0000'){
+			Toast.success(data.msg)
+		}else{
+			Toast.fail(data.msg)
+		}
+	}
+
+	async getPromoter(params){
+		let data = await this.POST('/yii2-insurance/web/index.php?r=api/user/get-promoter',params)
+		
+		return data.data.content
+	}
+
+	async workUserOddApply(params){
+		let data = await this.POST('/yii2-insurance/web/index.php?r=api/work/work-promoter-odd-list',params)
+		
+		return data.data.content
+	}
+
+	async getQrcode(params){
+		let data = await this.POST('/yii2-insurance/web/index.php?r=api/user/get-qrcode',params)
+		
+		return data.data.content.url
+	}
 }
 
 export default new UserInfo()

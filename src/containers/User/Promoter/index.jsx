@@ -5,13 +5,7 @@ import './index.less'
 import { PullToRefresh } from 'antd-mobile';
 import Strip from '@/components/Strip'
 import List from '@/components/List'
-
-
-const data = [
-	{faceUrl:"https://asset.91hc.com/src/images/index/new-center-1.png",name:'张零食',phone:'18959333600',href:'/itemrecord'},
-	{faceUrl:"https://asset.91hc.com/src/images/index/new-center-1.png",name:'张食',phone:'13774770527',href:'/itemrecord'},
-	{faceUrl:"https://asset.91hc.com/src/images/index/new-center-1.png",name:'张零食',phone:'13774770527',href:'/itemrecord'},
-]
+import userInfoAPI from '@/api/userInfo'
 
 class Promoter extends Component{
 	  constructor(props) {
@@ -20,12 +14,16 @@ class Promoter extends Component{
 	      refreshing: false,
 	      down: true,
 	      height: document.documentElement.clientHeight,
+	      data:[]
 	    };
 	  }
-	 componentDidMount() {
+	 async componentDidMount() {
 	    const hei = this.state.height - ReactDOM.findDOMNode(this.ptr).offsetTop;
+	    let data = await userInfoAPI.getPromoter();
+	    console.log(data);
 	    this.setState({
 	      height: hei,
+	      data,
 	    })
 	}
 	onRefresh =()=>{
@@ -53,7 +51,7 @@ class Promoter extends Component{
 					<Strip>共有6条记录</Strip>
 					
 					{
-						data.map((value,key)=><List faceUrl={value.faceUrl} name={value.name} phone={value.phone} href={value.href} detailButtonText="项目记录" key={key}/>)
+						this.state.data.map((value,key)=><List faceUrl={value.faceSrc} name={value.user} phone={value.phone} href={ /itemrecord/+ value.strUserId} detailButtonText="项目记录" key={key}/>)
 					}
 					
 				</PullToRefresh>

@@ -1,28 +1,37 @@
 import React,{ Component } from 'react'
 import Header from '@/components/Header'
 import Title from '@/components/Title'
-
-import { List, DatePicker ,Switch ,Picker,Button} from 'antd-mobile'
+import { List, DatePicker ,Switch ,Picker,Button,Toast} from 'antd-mobile'
 import { createForm } from 'rc-form'
+import homeAPI from '@/api/home'
 
 import './index.less'
 
-
-const data =[
-	{value:'340000',label:'5万'},
-	{value:'340300',label:'10万'},
-]
 
 class Insurance extends Component{
 	constructor(props){
 		super(props)
 		this.state={
-			data: new Date(Date.now()),
+			date: new Date(Date.now()),
 			businessData: new Date(Date.now()),
 			businessDisabled:false,
 			visible:false,
 			pickerValue:'340000'
 		}
+	}
+
+	submit = ()=>{
+		this.props.form.validateFields(async (err,value)=>{
+			value.strWorkNum = this.props.location.query
+			value.strCompulsoryInsurance = new Date().getTime(this.state.date)
+			value.strCommercialInsurance = new Date().getTime(this.state.businessData)
+			let data = await homeAPI.workInsuranceData(value)
+			if(data.ret==='0000'){
+				this.props.history.push({pathname:'/home/company',query:data.data.content})
+			}else{
+				Toast.fail(data.msg)
+			}
+		})
 	}
 	render(){
 		const { getFieldProps } = this.props.form
@@ -32,6 +41,7 @@ class Insurance extends Component{
 				<Title>交强险（含车船税）</Title>
 				<List>
 					<DatePicker
+						{...getFieldProps('strCompulsoryInsurance')}
 			          mode="date"
 			          title="选择日期"
 			          extra="选择生效日期"
@@ -43,6 +53,7 @@ class Insurance extends Component{
 			    </List>
 		    	<List className='business'>
 		    		<DatePicker
+		    			{...getFieldProps('strCommercialInsurance')}
 		              mode="date"
 		              title="选择日期"
 		              extra="选择生效日期"
@@ -55,7 +66,7 @@ class Insurance extends Component{
 		              </List.Item>
 		            </DatePicker>
 		              <Switch
-                        {...getFieldProps('Switch', {
+                        {...getFieldProps('tCommercialInsuranceEffectiveTime', {
                           initialValue: true,
                           valuePropName: 'checked',
                         })}
@@ -74,25 +85,32 @@ class Insurance extends Component{
 		        <List>
 		        	<List.Item
 		        	  extra={<Switch
-		        	    {...getFieldProps('Switch2', {
+		        	    {...getFieldProps('strLossInsurance', {
 		        	      initialValue: false,
 		        	      valuePropName: 'checked',
 		        	    })}
 		        	    color = '#165ca7'
-		        	    onClick={(checked) => { console.log(checked); }}
 		        	  />}
 		        	>车辆损失险</List.Item>
 		        </List>
-
+		  
 		        <Picker extra="请选择"
-		          data={data}
+		          data={[
+		        		{value:'5万',label:"5万"},
+		        		{value:'10万',label:"10万"},
+		        		{value:'15万',label:"15万"},
+		        		{value:'20万',label:"20万"},
+		        		{value:'30万',label:"30万"},
+		        		{value:'50万',label:"50万"},
+		        		{value:'100万',label:"100万"},
+		        		{value:'150万',label:"150万"},
+		        		{value:'200万',label:"200万"},
+		        	]}
 		          cols={1}
 		          title="选择金额"
-		          {...getFieldProps('city', {
-		            initialValue: ['340000'],
+		          {...getFieldProps('strThirdPartyInsurance', {
+		            initialValue: ['5万'],
 		          })}
-		          onOk={e => console.log('ok', e)}
-		          onDismiss={e => console.log('dismiss', e)}
 		        >
 		          <List.Item arrow="horizontal">第三责任险</List.Item>
 		        </Picker>
@@ -100,39 +118,54 @@ class Insurance extends Component{
 		        <List>
 		        	<List.Item
 		        	  extra={<Switch
-		        	    {...getFieldProps('Switch3', {
+		        	    {...getFieldProps('strTheftInsurance', {
 		        	      initialValue: false,
 		        	      valuePropName: 'checked',
 		        	    })}
 		        	    color = '#165ca7'
-		        	    onClick={(checked) => { console.log(checked); }}
 		        	  />}
 		        	>全车强盗险</List.Item>
 		        </List>
 
 		        <Picker extra="请选择"
-		          data={data}
+		          data={[
+		        		{value:'1万/人',label:"1万/人"},
+		        		{value:'2万/人',label:"2万/人"},
+		        		{value:'3万/人',label:"3万/人"},
+		        		{value:'4万/人',label:"4万/人"},
+		        		{value:'5万/人',label:"5万/人"},
+		        		{value:'10万/人',label:"10万/人"},
+		        		{value:'20万/人',label:"20万/人"},
+		        	]}
 		          cols={1}
 		          title="选择金额"
-		          {...getFieldProps('zeren', {
-		            initialValue: ['340000'],
+		          {...getFieldProps('strDriverLiabilityInsurance', {
+		            initialValue: ['1万/人'],
 		          })}
-		          onOk={e => console.log('ok', e)}
-		          onDismiss={e => console.log('dismiss', e)}
 		        >
 		          <List.Item arrow="horizontal">司机责任险</List.Item>
 		        </Picker>
 
 		        <List>
 			        <Picker extra="请选择"
-			          data={data}
+			          data={[
+			        		{value:'1万/人',label:"1万/人"},
+			        		{value:'2万/人',label:"2万/人"},
+			        		{value:'3万/人',label:"3万/人"},
+			        		{value:'4万/人',label:"4万/人"},
+			        		{value:'5万/人',label:"5万/人"},
+			        		{value:'8万/人',label:"8万/人"},
+			        		{value:'10万/人',label:"10万/人"},
+			        		{value:'20万/人',label:"20万/人"},
+			        		{value:'30万/人',label:"30万/人"},
+			        		{value:'40万/人',label:"40万/人"},
+			        		{value:'50万/人',label:"50万/人"},
+		        		]}
 			          cols={1}
 			          title="选择金额"
-			          {...getFieldProps('chengke', {
-			            initialValue: ['340000'],
+			          {...getFieldProps('strPassengerLiabilityInsurance', {
+			            initialValue: ['1万/人'],
 			          })}
-			          onOk={e => console.log('ok', e)}
-			          onDismiss={e => console.log('dismiss', e)}
 			        >
 			          <List.Item arrow="horizontal">乘客责任险</List.Item>
 			        </Picker>
@@ -144,21 +177,22 @@ class Insurance extends Component{
 
                 
     	        <Picker extra="请选择"
-    	          data={data}
+    	          data={[
+			        		{value:'国产',label:"国产"},
+			        		{value:'进口',label:"进口"},
+		        		]}
     	          cols={1}
     	          title="选择金额"
-    	          {...getFieldProps('boli', {
-    	            initialValue: ['340000'],
+    	          {...getFieldProps('strGlassInsurance', {
+    	            initialValue: ['国产'],
     	          })}
-    	          onOk={e => console.log('ok', e)}
-    	          onDismiss={e => console.log('dismiss', e)}
     	        >
     	          <List.Item arrow="horizontal">玻璃破碎险</List.Item>
     	        </Picker>
         	    <List>
                 	<List.Item
                 	  extra={<Switch
-                	    {...getFieldProps('Switch4', {
+                	    {...getFieldProps('intSelfignitingLossInsurance', {
                 	      initialValue: false,
                 	      valuePropName: 'checked',
                 	    })}
@@ -170,7 +204,7 @@ class Insurance extends Component{
                 <List>
                 	<List.Item
                 	  extra={<Switch
-                	    {...getFieldProps('Switch5', {
+                	    {...getFieldProps('strWadingInsurance', {
                 	      initialValue: false,
                 	      valuePropName: 'checked',
                 	    })}
@@ -182,14 +216,17 @@ class Insurance extends Component{
 
             	<List>
 	            	<Picker extra="请选择"
-	            	  data={data}
+	            	  data={[
+			        		{value:'2000',label:"2000"},
+			        		{value:'5000',label:"5000"},
+			        		{value:'10000',label:"10000"},
+			        		{value:'20000',label:"20000"},
+		        		]}
 	            	  cols={1}
 	            	  title="选择金额"
-	            	  {...getFieldProps('bolis', {
-	            	    initialValue: ['340000'],
+	            	  {...getFieldProps('strScratchInsurance', {
+	            	    initialValue: ['2000'],
 	            	  })}
-	            	  onOk={e => console.log('ok', e)}
-	            	  onDismiss={e => console.log('dismiss', e)}
 	            	>
 	            	  <List.Item arrow="horizontal">划痕险</List.Item>
 	            	</Picker>
@@ -197,18 +234,17 @@ class Insurance extends Component{
 
             	<List.Item
             	  extra={<Switch
-            	    {...getFieldProps('Switch6', {
+            	    {...getFieldProps('strExcessInsurance', {
             	      initialValue: false,
             	      valuePropName: 'checked',
             	    })}
             	    color = '#165ca7'
-            	    onClick={(checked) => { console.log(checked); }}
             	  />}
             	>不记免赔率险</List.Item>
 
 
             	<div  className='button-box'>
-            		<Button type="primary" onClick={()=>{this.props.history.push('/home/company')}}>下一步</Button>
+            		<Button type="primary" onClick={this.submit}>下一步</Button>
             	</div>
 			</div>
 		)
