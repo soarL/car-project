@@ -89,11 +89,19 @@ class UserInfo extends Server{
 		return data.data.content
 	}
 
+	async workUserOperat(params){
+		let data = await this.POST('/yii2-insurance/web/index.php?r=api/work/work-user-odd-apply-operat',params)
+		
+		return data.data.content
+	}
+
 	async getQrcode(params){
 		let data = await this.POST('/yii2-insurance/web/index.php?r=api/user/get-qrcode',params)
 		
 		return data.data.content.url
 	}
+
+
 }
 
 export default new UserInfo()

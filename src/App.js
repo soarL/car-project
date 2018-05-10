@@ -111,6 +111,7 @@ const AsyncRegister = Loadable({
   loading: loading
 })
 
+
 class App extends Component {
   constructor(props){
     super(props)

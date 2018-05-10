@@ -4,10 +4,11 @@ import Carousel from '@/components/Carousel'
 import Title from '@/components/Title'
 import './index.less'
 
-import { List, InputItem ,Picker, Button,Toast} from 'antd-mobile'
+import { List, InputItem ,Picker, Button,Toast,Modal} from 'antd-mobile'
 import { createForm } from 'rc-form'
 import homeAPI from '@/api/home'
 
+const alert = Modal.alert
 
 class Index extends Component{
 
@@ -20,6 +21,17 @@ class Index extends Component{
 		}
 	}
 	async componentDidMount() {
+		let backData = await homeAPI.goToTable()
+		if(backData){
+
+	       alert('您好', '您有未完成的表单是否继续填写？', [
+	         { text: '重新填写', onPress:()=>false},
+	         { text: '继续', onPress: () => {this.props.history.push(backData)} },
+	       ])
+			
+			return
+		}
+
 		let data = await homeAPI.city()
 		this.setState({
 			data
@@ -28,6 +40,14 @@ class Index extends Component{
 
 	submit = ()=>{
 		this.props.form.validateFields( async (err,value)=>{
+			if(!value.strRealName){
+				Toast.fail('请填写姓名！')
+				return
+			}
+			if(!value.strPhone || (value.strPhone.length !== 11)){
+				Toast.fail('请填写11位手机号！')
+				return
+			}
 			value.strCarNumber = this.state.strCarNumber
 			let data = await homeAPI.workUserData(value)
 
@@ -58,7 +78,7 @@ class Index extends Component{
 	        		<InputItem
 	  		      		{...getFieldProps('strPhone')}
 	                    placeholder="必填"
-	                    type='phone'
+	                    type='text'
 	                    clear
 	                    moneyKeyboardAlign="left"
 	                  >手机号码：</InputItem>
@@ -68,7 +88,7 @@ class Index extends Component{
             	  data={this.state.data}
             	  title="选择城市"
             	  {...getFieldProps('strTravelAdder', {
-            	    initialValue:this.state.strTravelAdder ,
+            	    initialValue:['350000','350100','350102'],
             	  })}
             	  onChange={(e)=>{this.setState({strTravelAdder:e})}}
             	  value={this.state.strTravelAdder}

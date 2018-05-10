@@ -1,7 +1,7 @@
 import React,{ Component } from 'react'
 import Header from '@/components/Header'
 import './index.less'
-import { Flex ,WhiteSpace,Button} from 'antd-mobile'
+import { Flex ,WhiteSpace,Button,Toast} from 'antd-mobile'
 import Title from '@/components/Title'
 import userInfoAPI from '@/api/userInfo'
 
@@ -37,7 +37,8 @@ class ApplyDetails extends Component{
 	      phone:"",
 	      name:"",
 	      oddNumber:"",
-	      data:[]
+	      data:[],
+	      applyStatus:'no'
 	    };
 	  }
 
@@ -55,8 +56,23 @@ class ApplyDetails extends Component{
 	      phone:data.phone,
 	      name:data.name,
 	      oddNumber:data.oddNumber,
+	      applyStatus:data.eApplyStatus
 	    })
 
+	}
+
+	yes = async ()=>{
+		let strWorkNum = this.props.match.params.strWorkNum
+		let data = await userInfoAPI.workUserOperat({strWorkNum,buttonType:'yes'})
+		this.setState({applyStatus:'ok'})
+		Toast.info(data)
+	}
+
+	no = async ()=>{
+		let strWorkNum = this.props.match.params.strWorkNum
+		let data = await userInfoAPI.workUserOperat({strWorkNum,buttonType:'no'})
+		this.setState({applyStatus:'ok'})
+		Toast.info(data)
 	}
 
 	render(){
@@ -87,11 +103,9 @@ class ApplyDetails extends Component{
 					<WhiteSpace/>
 
 					<Title href={'/paymenthistory/' + this.state.oddNumber}>还款详情</Title>
-					<div  className='button-box'>
-						<Button type="primary" >确定</Button>
-						<WhiteSpace/>
-						<Button type="default" >取消</Button>
-					</div>
+					{
+						(this.state.applyStatus==='no') ? <div  className='button-box'><Button type="primary" onClick={this.yes}>确定</Button><WhiteSpace/><Button type="default" onClick={this.no}>取消</Button></div> : ''
+					}
 			</div>
 		)
 	}

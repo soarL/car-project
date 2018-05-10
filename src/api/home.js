@@ -2,15 +2,6 @@ import Server from '@/api/server'
 import { Toast } from 'antd-mobile'
 
 class Home extends Server{
-	async login(params){
-		let data = await this.POST('/yii2-insurance/web/index.php?r=api/user/bind',params)
-		return data
-	}
-	async register(params){
-		let data = await this.POST('/yii2-insurance/web/index.php?r=api/user/bind',params)
-		return data
-	}
-
 	async workUserData(params){
 		let data = await this.POST('/yii2-insurance/web/index.php?r=api/work/work-user-data',params)
 		return data
@@ -47,7 +38,16 @@ class Home extends Server{
 		return data
 	}
 
-
+	async goToTable(history){
+		let data = await this.POST("/yii2-insurance/web/index.php?r=api/work/work-contiu")
+		
+		if(data.ret==='0000'){
+			return false
+		}else{
+			return {pathname:`/home/${data.data.content.table}`,query:data.data.content.strWorkNum}
+		}
+		
+	}
 
 }
 

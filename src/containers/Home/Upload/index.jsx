@@ -111,6 +111,12 @@ class Upload extends Component{
 	 	}
 	 }
 
+	 componentDidMount() {
+	 	if(!this.props.location.query){
+			Toast.fail('申请失败，请重新填写！')
+			this.props.history.push('/')
+		}
+	 }
 	render(){
 		return(
 			<div className='coverage'>

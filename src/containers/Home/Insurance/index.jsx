@@ -22,9 +22,17 @@ class Insurance extends Component{
 
 	submit = ()=>{
 		this.props.form.validateFields(async (err,value)=>{
+
+
+			function time(e){
+				var d = new Date(e);  
+				var youWant=d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds(); 
+				return youWant
+			}
+
 			value.strWorkNum = this.props.location.query
-			value.strCompulsoryInsurance = new Date().getTime(this.state.date)
-			value.strCommercialInsurance = new Date().getTime(this.state.businessData)
+			value.tCompulsoryInsuranceEffectiveTime = time(this.state.date)
+			value.tCommercialInsuranceEffectiveTime = time(this.state.businessData)
 			let data = await homeAPI.workInsuranceData(value)
 			if(data.ret==='0000'){
 				this.props.history.push({pathname:'/home/company',query:data.data.content})
@@ -32,6 +40,12 @@ class Insurance extends Component{
 				Toast.fail(data.msg)
 			}
 		})
+	}
+	componentDidMount() {
+		if(!this.props.location.query){
+			Toast.fail('申请失败，请重新填写！')
+			this.props.history.push('/')
+		}
 	}
 	render(){
 		const { getFieldProps } = this.props.form
@@ -41,7 +55,7 @@ class Insurance extends Component{
 				<Title>交强险（含车船税）</Title>
 				<List>
 					<DatePicker
-						{...getFieldProps('strCompulsoryInsurance')}
+						{...getFieldProps('tCompulsoryInsuranceEffectiveTime')}
 			          mode="date"
 			          title="选择日期"
 			          extra="选择生效日期"
@@ -53,12 +67,12 @@ class Insurance extends Component{
 			    </List>
 		    	<List className='business'>
 		    		<DatePicker
-		    			{...getFieldProps('strCommercialInsurance')}
+		    			{...getFieldProps('tCommercialInsuranceEffectiveTime')}
 		              mode="date"
 		              title="选择日期"
 		              extra="选择生效日期"
 		              value={this.state.businessData}
-		              onChange={date => this.setState({ date })}
+		              onChange={businessData => this.setState({ businessData })}
 		              disabled={this.state.businessDisabled}
 		            >
 		              <List.Item arrow="horizontal">商业险
@@ -66,7 +80,7 @@ class Insurance extends Component{
 		              </List.Item>
 		            </DatePicker>
 		              <Switch
-                        {...getFieldProps('tCommercialInsuranceEffectiveTime', {
+                        {...getFieldProps('strCommercialInsurance', {
                           initialValue: true,
                           valuePropName: 'checked',
                         })}
@@ -192,7 +206,7 @@ class Insurance extends Component{
         	    <List>
                 	<List.Item
                 	  extra={<Switch
-                	    {...getFieldProps('intSelfignitingLossInsurance', {
+                	    {...getFieldProps('strSelfIgnitionInsurance', {
                 	      initialValue: false,
                 	      valuePropName: 'checked',
                 	    })}

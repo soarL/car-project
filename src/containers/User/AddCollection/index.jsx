@@ -42,7 +42,14 @@ class AddCollection extends Component{
 	}
 	submit=(e)=>{
 		this.props.form.validateFields((err, values) => {
-			values.tCreateTime = new Date().getTime(this.state.date)
+
+			function time(e){
+				var d = new Date(e);  
+				var youWant=d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds(); 
+				return youWant
+			}
+
+			values.tCreateTime = time(this.state.date)
 			values.oddNumber = this.props.match.params.oddNumber
 			values.intPeriod = this.props.match.params.intPeriod
 		    userInfoAPI.addCollection(values)

@@ -59,7 +59,12 @@ class Company extends Component{
 			
 		})
 	}
-
+	componentDidMount() {
+		if(!this.props.location.query){
+			Toast.fail('申请失败，请重新填写！')
+			this.props.history.push('/')
+		}
+	}
 	render(){
 		const { getFieldProps } = this.props.form
 
