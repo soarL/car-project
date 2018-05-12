@@ -121,26 +121,7 @@ class App extends Component {
   }
   componentDidMount() {
     // 做于预渲染
-    AsyncIndex.preload()
-    AsyncInsurance.preload()
-    AsyncUserIndex.preload()
-    AsyncDetails.preload()
-    AsyncCompany.preload()
-    AsyncUpload.preload()
-    AsyncApplyDetails.preload()
-    AsyncWorkDetails.preload()
-    AsyncAmount.preload()
-    AsyncPaymentHistory.preload()
-    AsyncRepayHistory.preload()
-    AsyncRecentRepay.preload()
-    AsyncOverdue.preload()
-    AsyncCollectionDetail.preload()
-    AsyncAddCollection.preload()
-    AsyncPromoter.preload()
-    AsyncItemRecord.preload()
-    AsyncQRcode.preload()
-    AsyncLogin.preload()
-    AsyncRegister.preload()
+
   }
   render() {
     return (
